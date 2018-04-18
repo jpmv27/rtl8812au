@@ -215,7 +215,11 @@ MPTBT_FwC2hBtMpCtrl(
 	u1Byte		length
 	);
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,15,0))
+void MPh2c_timeout_handle(struct timer_list *timer);
+#else
 void MPh2c_timeout_handle(void *FunctionContext);
+#endif
 
 VOID mptbt_BtControlProcess(
 	PADAPTER	Adapter,

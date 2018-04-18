@@ -64,9 +64,15 @@ _func_exit_;
 
 
 /*
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,15,0))
+void sitesurvey_ctrl_handler(struct timer_list *timer)
+{
+	_adapter *adapter = from_timer(adapter, timer, mlmepriv.sitesurveyctrl.sitesurvey_ctrl_timer);
+#else
 void sitesurvey_ctrl_handler(void *FunctionContext)
 {
 	_adapter *adapter = (_adapter *)FunctionContext;
+#endif
 
 	_sitesurvey_ctrl_handler(adapter);
 
@@ -74,23 +80,41 @@ void sitesurvey_ctrl_handler(void *FunctionContext)
 }
 */
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,15,0))
+void rtw_join_timeout_handler (struct timer_list *timer)
+{
+	_adapter *adapter = from_timer(adapter, timer, mlmepriv.assoc_timer);
+#else
 void rtw_join_timeout_handler (void *FunctionContext)
 {
 	_adapter *adapter = (_adapter *)FunctionContext;
+#endif
 	_rtw_join_timeout_handler(adapter);
 }
 
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,15,0))
+void _rtw_scan_timeout_handler (struct timer_list *timer)
+{
+	_adapter *adapter = from_timer(adapter, timer, mlmepriv.scan_to_timer);
+#else
 void _rtw_scan_timeout_handler (void *FunctionContext)
 {
 	_adapter *adapter = (_adapter *)FunctionContext;
+#endif
 	rtw_scan_timeout_handler(adapter);
 }
 
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,15,0))
+void _dynamic_check_timer_handlder (struct timer_list *timer)
+{
+	_adapter *adapter = from_timer(adapter, timer, mlmepriv.dynamic_chk_timer);
+#else
 void _dynamic_check_timer_handlder (void *FunctionContext)
 {
 	_adapter *adapter = (_adapter *)FunctionContext;
+#endif
 
 #if (MP_DRIVER == 1)
 	if (adapter->registrypriv.mp_mode == 1 && adapter->mppriv.mp_dm ==0) //for MP ODM dynamic Tx power tracking
@@ -112,9 +136,15 @@ void _dynamic_check_timer_handlder (void *FunctionContext)
 }
 
 #ifdef CONFIG_SET_SCAN_DENY_TIMER
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,15,0))
+void _rtw_set_scan_deny_timer_hdl(struct timer_list *timer)
+{
+	_adapter *adapter = from_timer(adapter, timer, mlmepriv.set_scan_deny_timer);
+#else
 void _rtw_set_scan_deny_timer_hdl(void *FunctionContext)
 {
 	_adapter *adapter = (_adapter *)FunctionContext;	 
+#endif
 	rtw_set_scan_deny_timer_hdl(adapter);
 }
 #endif
@@ -330,31 +360,55 @@ _func_exit_;
 
 }
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,15,0))
+void _survey_timer_hdl (struct timer_list *timer)
+{
+	_adapter *padapter = from_timer(padapter, timer, mlmeextpriv.survey_timer);
+#else
 void _survey_timer_hdl (void *FunctionContext)
 {
 	_adapter *padapter = (_adapter *)FunctionContext;
-	
+#endif
+
 	survey_timer_hdl(padapter);
 }
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,15,0))
+void _link_timer_hdl (struct timer_list *timer)
+{
+	_adapter *padapter = from_timer(padapter, timer, mlmeextpriv.link_timer);
+#else
 void _link_timer_hdl (void *FunctionContext)
 {
 	_adapter *padapter = (_adapter *)FunctionContext;
+#endif
 	link_timer_hdl(padapter);
 }
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,15,0))
+void _addba_timer_hdl(struct timer_list *timer)
+{
+	struct sta_info *psta = from_timer(psta, timer, addba_retry_timer);
+#else
 void _addba_timer_hdl(void *FunctionContext)
 {
 	struct sta_info *psta = (struct sta_info *)FunctionContext;
+#endif
 	addba_timer_hdl(psta);
 }
 
 #ifdef CONFIG_IEEE80211W
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,15,0))
+void _sa_query_timer_hdl (struct timer_list *timer)
+{
+	struct sta_info *psta = from_timer(psta, timer, dot11w_expire_timer);
+#else
 void _sa_query_timer_hdl (void *FunctionContext)
 {
 	struct sta_info *psta = (struct sta_info *)FunctionContext;
-	
+#endif
+
 	sa_query_timer_hdl(psta);
 }
 
@@ -372,15 +426,27 @@ void init_addba_retry_timer(_adapter *padapter, struct sta_info *psta)
 }
 
 /*
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,15,0))
+void _reauth_timer_hdl(struct timer_list *timer)
+{
+	_adapter *padapter = from_timer(padapter, timer, mlmeextpriv.reauth_timer);
+#else
 void _reauth_timer_hdl(void *FunctionContext)
 {
 	_adapter *padapter = (_adapter *)FunctionContext;
+#endif
 	reauth_timer_hdl(padapter);
 }
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,15,0))
+void _reassoc_timer_hdl(struct timer_list *timer)
+{
+	_adapter *padapter = from_timer(padapter, timer, mlmeextpriv.reassoc_timer);
+#else
 void _reassoc_timer_hdl(void *FunctionContext)
 {
 	_adapter *padapter = (_adapter *)FunctionContext;
+#endof
 	reassoc_timer_hdl(padapter);
 }
 */

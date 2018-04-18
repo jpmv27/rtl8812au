@@ -2928,9 +2928,15 @@ void rtw_build_tunneled_probe_rsp_ies(_adapter * padapter, struct xmit_frame * p
 }
 #endif /* CONFIG_WFD */
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,15,0))
+void _tdls_tpk_timer_hdl(struct timer_list *timer)
+{
+	struct sta_info *ptdls_sta = from_timer(ptdls_sta, timer, TPK_timer);
+#else
 void _tdls_tpk_timer_hdl(void *FunctionContext)
 {
 	struct sta_info *ptdls_sta = (struct sta_info *)FunctionContext;
+#endif
 	struct tdls_txmgmt txmgmt;
 
 	_rtw_memset(&txmgmt, 0x00, sizeof(struct tdls_txmgmt));
@@ -2948,9 +2954,15 @@ void _tdls_tpk_timer_hdl(void *FunctionContext)
 }
 
 #ifdef CONFIG_TDLS_CH_SW
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,15,0))
+void _tdls_ch_switch_timer_hdl(struct timer_list *timer)
+{
+	struct sta_info *ptdls_sta = from_timer(ptdls_sta, timer, ch_sw_timer);
+#else
 void _tdls_ch_switch_timer_hdl(void *FunctionContext)
 {
 	struct sta_info *ptdls_sta = (struct sta_info *)FunctionContext;
+#endif
 	_adapter *padapter = ptdls_sta->padapter;
 	struct tdls_ch_switch *pchsw_info = &padapter->tdlsinfo.chsw_info;
 
@@ -2990,9 +3002,15 @@ void _tdls_ch_switch_timer_hdl(void *FunctionContext)
 #endif
 }
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,15,0))
+void _tdls_delay_timer_hdl(struct timer_list *timer)
+{
+	struct sta_info *ptdls_sta = from_timer(ptdls_sta, timer, delay_timer);
+#else
 void _tdls_delay_timer_hdl(void *FunctionContext)
 {
 	struct sta_info *ptdls_sta = (struct sta_info *)FunctionContext;
+#endif
 	_adapter *padapter = ptdls_sta->padapter;
 	struct tdls_ch_switch *pchsw_info = &padapter->tdlsinfo.chsw_info;
 
@@ -3001,9 +3019,15 @@ void _tdls_delay_timer_hdl(void *FunctionContext)
 }
 #endif
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,15,0))
+void _tdls_handshake_timer_hdl(struct timer_list *timer)
+{
+	struct sta_info *ptdls_sta = from_timer(ptdls_sta, timer, handshake_timer);
+#else
 void _tdls_handshake_timer_hdl(void *FunctionContext)
 {
 	struct sta_info *ptdls_sta = (struct sta_info *)FunctionContext;
+#endif
 	_adapter *padapter = ptdls_sta->padapter;
 	struct tdls_txmgmt txmgmt;
 
@@ -3024,9 +3048,15 @@ void _tdls_handshake_timer_hdl(void *FunctionContext)
 	}
 }
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,15,0))
+void _tdls_pti_timer_hdl(struct timer_list *timer)
+{
+	struct sta_info *ptdls_sta = from_timer(ptdls_sta, timer, pti_timer);
+#else
 void _tdls_pti_timer_hdl(void *FunctionContext)
 {
 	struct sta_info *ptdls_sta = (struct sta_info *)FunctionContext;
+#endif
 	_adapter *padapter = ptdls_sta->padapter;
 	struct tdls_txmgmt txmgmt;
 

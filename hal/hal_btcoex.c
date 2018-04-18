@@ -560,7 +560,11 @@ static u8 _is_btfwver_valid(PBTC_COEXIST pBtCoexist, u16 btfwver)
 	return _TRUE;
 }
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,15,0))
+static void _btmpoper_timer_hdl(struct timer_list *timer)
+#else
 static void _btmpoper_timer_hdl(void *p)
+#endif
 {
 	if (GLBtcBtMpRptWait) {
 		GLBtcBtMpRptWait = 0;

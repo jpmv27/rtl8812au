@@ -1695,7 +1695,11 @@ Beamforming_SWTimerCallback(
 #if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
 	PRT_TIMER		pTimer
 #elif(DM_ODM_SUPPORT_TYPE == ODM_CE)
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,15,0))
+	struct timer_list *timer
+#else
 	void *FunctionContext
+#endif
 #endif
 	)
 {
@@ -1707,7 +1711,11 @@ Beamforming_SWTimerCallback(
 	ODM_RT_TRACE(pDM_Odm, PHYDM_COMP_TXBF, ODM_DBG_LOUD, ("[%s] Start!\n", __func__));
 	Beamforming_TimerCallback(pDM_Odm);
 #elif(DM_ODM_SUPPORT_TYPE == ODM_CE)
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,15,0))
+	PDM_ODM_T	pDM_Odm = from_timer(pDM_Odm, timer, BeamformingInfo.BeamformingTimer);
+#else
 	PDM_ODM_T	pDM_Odm = (PDM_ODM_T)FunctionContext;
+#endif
 	PADAPTER	Adapter = pDM_Odm->Adapter;
 
 	if (Adapter->net_closed == TRUE)

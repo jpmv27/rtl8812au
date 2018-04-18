@@ -420,7 +420,11 @@ ODM_SW_AntDiv_WorkitemCallback(
 
 VOID
 ODM_SW_AntDiv_Callback(
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,15,0))
+	struct timer_list *timer
+#else
 	void 		*FunctionContext
+#endif
 	);
 
 #endif

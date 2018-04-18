@@ -2386,9 +2386,15 @@ void BlinkHandler(PLED_USB pLed)
 //		Callback function of LED BlinkTimer, 
 //		it just schedules to corresponding BlinkWorkItem/led_blink_hdl
 //
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,15,0))
+void BlinkTimerCallback(struct timer_list *timer)
+{
+	PLED_USB	 pLed = from_timer(pLed, timer, BlinkTimer);
+#else
 void BlinkTimerCallback(void *data)
 {
 	PLED_USB	 pLed = (PLED_USB)data;
+#endif
 	_adapter		*padapter = pLed->padapter;
 
 	//DBG_871X("%s\n", __FUNCTION__);

@@ -324,7 +324,11 @@ Beamforming_SWTimerCallback(
 #if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
 	PRT_TIMER		pTimer
 #elif(DM_ODM_SUPPORT_TYPE == ODM_CE)
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,15,0))
+	struct timer_list *timer
+#else
 	void *FunctionContext
+#endif
 #endif
 	);
 

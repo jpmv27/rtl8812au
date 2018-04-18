@@ -426,10 +426,17 @@ exit:
 	return;
 }
 
-void pwr_state_check_handler(RTW_TIMER_HDL_ARGS);
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,15,0))
+void pwr_state_check_handler(struct timer_list *timer)
+{
+	struct pwrctrl_priv *pwrpriv = from_timer(pwrpriv, timer, pwr_state_check_timer);
+	struct dvobj_priv *dvobj = pwrctl_to_dvobj(pwrpriv);
+	_adapter *padapter = dvobj->padapters[IFACE_ID0];
+#else
 void pwr_state_check_handler(RTW_TIMER_HDL_ARGS)
 {
 	_adapter *padapter = (_adapter *)FunctionContext;
+#endif
 	rtw_ps_cmd(padapter);
 }
 
@@ -1584,14 +1591,17 @@ exit:
 /*
  * This function is a timer handler, can't do any IO in it.
  */
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,15,0))
+static void pwr_rpwm_timeout_handler(struct timer_list *timer)
+{
+	struct pwrctrl_priv *pwrpriv = from_timer(pwrpriv, timer, pwr_rpwm_timer);
+#else
 static void pwr_rpwm_timeout_handler(void *FunctionContext)
 {
-	PADAPTER padapter;
-	struct pwrctrl_priv *pwrpriv;
+	PADAPTER padapter = (PADAPTER)FunctionContext;
+	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
+#endif
 
-
-	padapter = (PADAPTER)FunctionContext;
-	pwrpriv = adapter_to_pwrctl(padapter);
 	DBG_871X("+%s: rpwm=0x%02X cpwm=0x%02X\n", __func__, pwrpriv->rpwm, pwrpriv->cpwm);
 
 	if ((pwrpriv->rpwm == pwrpriv->cpwm) || (pwrpriv->cpwm >= PS_STATE_S2))

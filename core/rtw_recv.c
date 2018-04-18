@@ -30,7 +30,11 @@
 
 
 #ifdef CONFIG_NEW_SIGNAL_STAT_PROCESS
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,15,0))
+void rtw_signal_stat_timer_hdl(struct timer_list *timer);
+#else
 void rtw_signal_stat_timer_hdl(RTW_TIMER_HDL_ARGS);
+#endif
 
 enum {
 	SIGNAL_STAT_CALC_PROFILE_0 = 0,
@@ -4628,8 +4632,15 @@ _func_exit_;
 }
 
 #ifdef CONFIG_NEW_SIGNAL_STAT_PROCESS
-void rtw_signal_stat_timer_hdl(RTW_TIMER_HDL_ARGS){
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,15,0))
+void rtw_signal_stat_timer_hdl(struct timer_list *timer)
+{
+	_adapter *adapter = from_timer(adapter, timer, recvpriv.signal_stat_timer);
+#else
+void rtw_signal_stat_timer_hdl(RTW_TIMER_HDL_ARGS)
+{
 	_adapter *adapter = (_adapter *)FunctionContext;
+#endif
 	struct recv_priv *recvpriv = &adapter->recvpriv;
 	
 	u32 tmp_s, tmp_q;

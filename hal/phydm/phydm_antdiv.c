@@ -2740,9 +2740,15 @@ ODM_SW_AntDiv_WorkitemCallback(
 }
 
 VOID
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,15,0))
+ODM_SW_AntDiv_Callback(struct timer_list *timer)
+{
+	PDM_ODM_T	pDM_Odm= from_timer(pDM_Odm, timer, DM_SWAT_table.SwAntennaSwitchTimer_8723B);
+#else
 ODM_SW_AntDiv_Callback(void *FunctionContext)
 {
 	PDM_ODM_T	pDM_Odm= (PDM_ODM_T)FunctionContext;
+#endif
 	PADAPTER	padapter = pDM_Odm->Adapter;
 	if(padapter->net_closed == _TRUE)
 		return;
