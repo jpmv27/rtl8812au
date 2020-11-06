@@ -1598,7 +1598,7 @@ _func_enter_;
     for (j = 0; j < 8; j++)
     	pframe[payload_index+j] = mic[j];	//message[payload_index+j] = mic[j];
 
-	payload_index = hdrlen + 8;
+    payload_index = hdrlen + 8;
 	for (i=0; i< num_blocks; i++)
     {
         construct_ctr_preload(
@@ -1984,7 +1984,7 @@ _func_enter_;
     for (j = 0; j < 8; j++)
     	message[payload_index+j] = mic[j];
 
-	payload_index = hdrlen + 8;
+    payload_index = hdrlen + 8;
 	for (i=0; i< num_blocks; i++)
     {
         construct_ctr_preload(
